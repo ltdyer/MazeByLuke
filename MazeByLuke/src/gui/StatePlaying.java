@@ -183,18 +183,18 @@ public class StatePlaying extends DefaultState {
                 draw() ;
             }
             break;
-        case ToggleLocalMap: // show local information: current position and visible walls
+        case ToggleLocalMap: // its the M key. show local information: current position and visible walls
             // precondition for showMaze and showSolution to be effective
             // acts as a toggle switch
             mapMode = !mapMode;         
             draw() ; 
             break;
-        case ToggleFullMap: // show the whole maze
+        case ToggleFullMap: // its the Z key. show the whole maze
             // acts as a toggle switch
             showMaze = !showMaze;       
             draw() ; 
             break;
-        case ToggleSolution: // show the solution as a yellow line towards the exit
+        case ToggleSolution: // its the S key. show the solution as a yellow line towards the exit
             // acts as a toggle switch
             showSolution = !showSolution;       
             draw() ;
