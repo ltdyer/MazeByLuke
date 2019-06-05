@@ -50,14 +50,17 @@ public class MazeBuilder implements Runnable {
 	 * Constructor with option to make maze generation deterministic or random
 	 */
 	public MazeBuilder(boolean deterministic){
-		if (true == deterministic)
+		if (deterministic == true)
 		{
 			// Control random number generation
-			System.out.println("Assignment: functionality to make maze generation deterministic not implemented yet! Fix this! Program stops!");
-			System.exit(0) ;
-			// TODO: implement code that makes sure that if MazeBuilder.build is called for same the skill level twice, it will deliver the same results
+			// System.out.println("Assignment: functionality to make maze generation deterministic not implemented yet! Fix this! Program stops!");
+			// System.exit(0) ;
+			// TODO: implement code that makes sure that if MazeBuilder.build is called for the same skill level twice, it will deliver the same results
 			// HINT: check http://download.oracle.com/javase/6/docs/api/java/util/Random.html\
+			System.out.println("yo");
+			SingleRandom.setSeed(2);
 		}
+		System.out.println("oy");
 		random = SingleRandom.getRandom();
 	}
 

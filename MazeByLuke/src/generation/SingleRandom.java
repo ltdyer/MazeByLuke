@@ -27,6 +27,7 @@ public final class SingleRandom {
 	 */
 	private SingleRandom() {
 		generator = validSeed ? new Random(theSeed) : new Random();
+		//if validSeed is true return new Random(theSeed) else return new Random()
 	}
 
 	/**
