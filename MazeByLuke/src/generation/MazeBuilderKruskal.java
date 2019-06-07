@@ -1,11 +1,12 @@
 package generation;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MazeBuilderKruskal extends MazeBuilder implements Runnable {
 	
 	
-	
+	private List<List<Tree>> set;
 	
 	public MazeBuilderKruskal() {
 		super();
@@ -20,6 +21,12 @@ public class MazeBuilderKruskal extends MazeBuilder implements Runnable {
 	
 	@Override
 	protected void generatePathways() {
+		//make a tree object
+		set = new ArrayList<List<Tree>>();
+		
+		
+		//for (int y = 0; y < ; )
+		
 		//need to initially put a place down in the maze
 		int x = random.nextIntWithinInterval(0, width-1);
 		int y = random.nextIntWithinInterval(0, height-1);
