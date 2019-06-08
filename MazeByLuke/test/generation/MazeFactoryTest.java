@@ -1,8 +1,9 @@
 package generation;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import generation.Order.Builder;
 
@@ -18,24 +19,37 @@ public class MazeFactoryTest {
 	private OrderStub orderstub;
 	
 	//I want to do some tests involving distance, such as making sure the exit can be reached from anywhere in the maze
-	//so I will need a MazeConfiguration type variable
+	//so I will need a MazeConfiguration type variable.
+	//We also need the MazeConfiguartion to have all the relevant maze information regarding that instance
 	private MazeConfiguration mazeConfig;
 	
+	
+	//Also want a list of Mazeconfigs and Orders so I can test out different skill levels
+	
+	private MazeConfiguration mazeConfigList[];
+	private OrderStub orderStubList[];
 	//as per usual, we will need to set up whatever we are going to be building like we did with the Puzzle.
 	//this time it is the maze
-	/* @throws Exception */
+	
+	
 	@Before
-	public void setUp() throws Exception
-	{
+	public void setUp() throws Exception {
+		System.out.println("we made a maze facotry");
 		//It said in the specification that we want to make our maze deterministic for debugging
-		boolean bool = false;
+		boolean bool = true;
 		//now we want to make a new MazeFactory object with the deterministic quality
 		mazeFactory = new MazeFactory(bool);
+		mazeConfigList = new MazeConfiguration[9];
+		orderStubList = new OrderStub[9];
 		//we need an order object to start the maze
-		orderstub = new OrderStub(1, bool, Builder.DFS);
-		mazeFactory.order(orderstub);
-		mazeFactory.waitTillDelivered();
-		mazeConfig = orderstub.returnmazeConfig();
+		for (int i = 0; i < 9; i++) {
+			orderstub = new OrderStub(i, bool, Builder.DFS);
+			mazeFactory.order(orderstub);
+			mazeFactory.waitTillDelivered();
+			mazeConfig = orderstub.returnmazeConfig();
+			mazeConfigList[i] = mazeConfig;
+		}
+		
 	}
 	
 
@@ -47,10 +61,14 @@ public class MazeFactoryTest {
 	
 	//I would like to make sure everything was created properly
 	@Test
-	void setUpTest() {
+	public void setUpTest() {
 		assertNotNull(mazeFactory);
-		assertNotNull(mazeConfig);
+		assertNotNull(mazeConfigList);
+		for (int i = 0; i < 9; i++) {
+			assertNotNull(mazeConfigList[i]);
+		}
 		assertNotNull(orderstub);
+		assertNotNull(orderStubList);
 		
 	}
 	
@@ -72,7 +90,7 @@ public class MazeFactoryTest {
 			for (int height = 0; height < mazeConfig.getHeight(); height++)
 			{
 				int num = dist.getDistanceValue(width, height);
-				assertTrue(num > 0, "It is true that every position has a path to the exit");
+				assertTrue("It is not true that every position has a path to the exit", num > 0);
 			}
 		}
 	}
@@ -103,7 +121,13 @@ public class MazeFactoryTest {
 		}
 		
 		//now we should only have 1 exit, but if there is more than one then we should raise the error
-		assertTrue(exits == 1, "It is true that the maze only has 1 exit");
+		assertTrue("It is not true that the maze only has 1 exit", exits == 1);
+		
+	}
+	
+	@Test
+	public void difficultyLevels() {
+		
 		
 	}
 
@@ -112,6 +136,7 @@ public class MazeFactoryTest {
 	
 	
 }
+
 
 
 

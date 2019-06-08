@@ -66,8 +66,8 @@ public class MazeApplication extends JFrame {
 	    else if ("Kruskal".equalsIgnoreCase(parameter))
 	    {
 	    	// TODO: for P2 assignment, please add code to set the builder accordingly
-	    	//added this line on 69 because git is complex and awful
-	        throw new RuntimeException("Don't know anybody named Kruskal ...");
+	        msg = "MazeApplication: generating random maze with Kruskal's Algorithm.";
+	        result.setBuilder(Order.Builder.Kruskal);
 	    }
 	    else if ("Eller".equalsIgnoreCase(parameter))
 	    {
