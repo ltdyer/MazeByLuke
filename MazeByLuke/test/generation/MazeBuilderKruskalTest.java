@@ -31,9 +31,7 @@ public class MazeBuilderKruskalTest extends MazeBuilderKruskal {
 		mazeFactoryTest.order(orderStub);
 		mazeFactoryTest.waitTillDelivered();
 		mazeConfigTest = orderStub.returnmazeConfig();
-//		width = 8;
-//		height = 8;
-//		cells = new Cells(width, height);
+
 	}
 	
 	@After
