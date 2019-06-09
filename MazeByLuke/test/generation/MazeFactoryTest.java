@@ -121,7 +121,7 @@ public class MazeFactoryTest {
 		}
 		
 		//now we should only have 1 exit, but if there is more than one then we should raise the error
-		assertTrue("It is not true that the maze only has 1 exit", exits == 1);
+		assertTrue(exits == 1);
 		
 	}
 	
