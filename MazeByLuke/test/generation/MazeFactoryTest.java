@@ -90,7 +90,7 @@ public class MazeFactoryTest {
 			for (int height = 0; height < mazeConfig.getHeight(); height++)
 			{
 				int num = dist.getDistanceValue(width, height);
-				assertTrue("It is not true that every position has a path to the exit", num > 0);
+				assertTrue(num > 0);
 			}
 		}
 	}
