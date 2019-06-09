@@ -1,16 +1,19 @@
 package generation;
 
 import java.util.ArrayList;
-import java.util.List;
+
+
 
 public class MazeBuilderKruskal extends MazeBuilder implements Runnable {
-	
-	
-	private List<List<Tree>> set;
+
 	
 	//will need a maze board to iterate through as we need to assign the maze squares to a set for the 
 	//algorithm to work
-	private int[][] mazeBoard;
+	protected static int[][] mazeBoard;
+	
+	protected static ArrayList<Wall> candidates; 
+	
+	public int count = 0;
 	
 	public MazeBuilderKruskal() {
 		super();
@@ -25,8 +28,6 @@ public class MazeBuilderKruskal extends MazeBuilder implements Runnable {
 	
 	@Override
 	protected void generatePathways() {
-		//make a tree object
-		set = new ArrayList<List<Tree>>();
 		
 		//make a new maze board
 		mazeBoard = new int[width][height];
@@ -46,7 +47,7 @@ public class MazeBuilderKruskal extends MazeBuilder implements Runnable {
 		//Similarly to how Prim's algorithm, we should use the candidate wall approach with a list of walls
 		//to tear down
 		
-		final ArrayList<Wall> candidates = new ArrayList<Wall>();
+		candidates = new ArrayList<Wall>();
 		makeWallList(candidates);
 		
 		//Similarly to Prim'salgorithm, we want to keep going through until the list of candidate walls is empty
@@ -79,6 +80,7 @@ public class MazeBuilderKruskal extends MazeBuilder implements Runnable {
 						//will need to send in the wall to take down, and the coordinates for the current and neighbor 
 						//in question so we can change the values of those guys' sets
 						updateBreachedSet(currentWall, thisx, thisy, neighborx, neighbory);
+						
 					}
 				}
 			}
@@ -92,19 +94,28 @@ public class MazeBuilderKruskal extends MazeBuilder implements Runnable {
 	//want to use this method to take down the wall in question and then take all the values of the current set that
 	//is invading the other set and make it so that the breached set's values match those of the invading set
 	private void updateBreachedSet(Wall wall, int invadeX, int invadeY, int breachX, int breachY) {
-		
+		count++;
 		//first, take down the wall between the sets
 		cells.deleteWall(wall);
+		
+		//important side note! Originally I did not have these variables and decided to just do a direct comparison 
+		//of mazeBoard[breachX][breachY] with mazeBoard[i][j] and for some reason it wasn't working. I decided to 
+		//make the exact same comparison using variables containing the values in question rather than the direct values
+		//and for some reason that worked after I went through a lot of debugging
+		int invader = mazeBoard[invadeX][invadeY];
+		int breached = mazeBoard[breachX][breachY];
 		
 		//then loop through the board and change any space with the value of the breached set to be that of the value of
 		//invading set to show that it has conquered it and added it to his set
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
-				if (mazeBoard[i][j] == mazeBoard[breachX][breachY]) {
-					mazeBoard[i][j] = mazeBoard[invadeX][invadeY];
+				if (mazeBoard[i][j] == breached) {
+					mazeBoard[i][j] = invader;
 				}
 			}
 		}
+		
+		
 	}
 
 	
@@ -131,12 +142,4 @@ public class MazeBuilderKruskal extends MazeBuilder implements Runnable {
 		}
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-
 }

@@ -57,10 +57,8 @@ public class MazeBuilder implements Runnable {
 			// System.exit(0) ;
 			// TODO: implement code that makes sure that if MazeBuilder.build is called for the same skill level twice, it will deliver the same results
 			// HINT: check http://download.oracle.com/javase/6/docs/api/java/util/Random.html\
-			System.out.println("yo");
-			SingleRandom.setSeed(2);
+			SingleRandom.setSeed(0);
 		}
-		System.out.println("oy");
 		random = SingleRandom.getRandom();
 	}
 

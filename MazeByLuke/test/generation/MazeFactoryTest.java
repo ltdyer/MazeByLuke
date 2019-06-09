@@ -125,11 +125,8 @@ public class MazeFactoryTest {
 		
 	}
 	
-	@Test
-	public void difficultyLevels() {
-		
-		
-	}
+
+
 
 	
 	

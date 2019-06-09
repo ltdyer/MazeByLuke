@@ -210,6 +210,7 @@ public class Cells {
 		// return true if neighbor has not been visited before
 		return isFirstVisit(x+dx, y+dy);
 	}
+
 	/**
 	 * checks if cell (x,y) has a border in the given direction (dx,dy)
 	 * @param x coordinate of cell
