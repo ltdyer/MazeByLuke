@@ -125,6 +125,7 @@ public class MazeBuilderKruskalTest extends MazeBuilderKruskal {
 	@Test
 	public void reachExitFromAnywhere() 
 	{
+		//
 		//I think I want to use getMazedists because it can give us a distance object that tells us
 		//for every position how many steps we are away from the exit
 		Distance dist = mazeConfigTest.getMazedists();
