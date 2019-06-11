@@ -37,7 +37,7 @@ public class MazeApplication extends JFrame {
 	 * @param parameter can identify a generation method (Prim, Kruskal, Eller)
      * or a filename that stores an already generated maze that is then loaded, or can be null
 	 */
-	public MazeApplication(String parameter) {
+	public MazeApplication(String[] parameter) {
 		init(parameter);
 	}
 
@@ -48,50 +48,98 @@ public class MazeApplication extends JFrame {
 	 * or can be null
 	 * @return the newly instantiated and configured controller
 	 */
-	 Controller createController(String parameter) {
+	 Controller createController(String[] parameter) {
 	    // need to instantiate a controller to return as a result in any case
 	    Controller result = new Controller() ;
 	    String msg = null; // message for feedback
-	    // Case 1: no input
-	    if (parameter == null) {
-	        msg = "MazeApplication: maze will be generated with a randomized algorithm."; 
+	    
+	    int i = 0;
+	    int j;
+	    String parse = null;
+	    
+	    while (i < parameter.length && parameter[i].startsWith("-")) {
+	    	parse = parameter[i++];
+	    	
+	    	if (parse.equals("-g")) {
+	    		System.out.println("parse is -g");
+	    		parse = parameter[i++];
+	    		
+	    		System.out.println("parse is now: " + parse);
+	    		
+	    		if (parse.equals("Prim")) {
+	    			msg = "MazeApplication: generating random maze with Prim's algorithm.";
+	    	        result.setBuilder(Order.Builder.Prim);
+	    		}
+	    		else if (parse.equals("Kruskal")) {
+	    			msg = "MazeApplication: generating random maze with Kruskal's Algorithm.";
+	    	        result.setBuilder(Order.Builder.Kruskal);
+	    		}
+
+	    	}
+	    	
+	    	if (parse.equals("-f")) {
+	    		System.out.println("parse is -f");
+	    		parse = parameter[i++];
+	    		
+	    		File f = new File(parse) ;
+		        if (f.exists() && f.canRead())
+		        {
+		            msg = "MazeApplication: loading maze from file: " + parse;
+		            result.setFileName(parse);
+		            return result;
+		        }
+		        else {
+		            // None of the predefined strings and not a filename either: 
+		            msg = "MazeApplication: unknown parameter value: " + parse + " ignored, operating in default mode.";
+		        }
+	    	}
 	    }
-	    // Case 2: Prim
-	    else if ("Prim".equalsIgnoreCase(parameter))
-	    {
-	        msg = "MazeApplication: generating random maze with Prim's algorithm.";
-	        result.setBuilder(Order.Builder.Prim);
-	    }
-	    // Case 3 a and b: Eller, Kruskal or some other generation algorithm
-	    else if ("Kruskal".equalsIgnoreCase(parameter))
-	    {
-	    	// TODO: for P2 assignment, please add code to set the builder accordingly
-	        msg = "MazeApplication: generating random maze with Kruskal's Algorithm.";
-	        result.setBuilder(Order.Builder.Kruskal);
-	    }
-	    else if ("Eller".equalsIgnoreCase(parameter))
-	    {
-	    	// TODO: for P2 assignment, please add code to set the builder accordingly
-	        throw new RuntimeException("Don't know anybody named Eller ...");
-	    }
-	    // Case 4: a file
-	    else {
-	        File f = new File(parameter) ;
-	        if (f.exists() && f.canRead())
-	        {
-	            msg = "MazeApplication: loading maze from file: " + parameter;
-	            result.setFileName(parameter);
-	            return result;
-	        }
-	        else {
-	            // None of the predefined strings and not a filename either: 
-	            msg = "MazeApplication: unknown parameter value: " + parameter + " ignored, operating in default mode.";
-	        }
-	    }
-	    // controller instanted and attributes set according to given input parameter
-	    // output message and return controller
+	    
+	    
+	    
+	    
 	    System.out.println(msg);
 	    return result;
+	    
+//	    // Case 1: no input
+//	    if (parameter == null) {
+//	        msg = "MazeApplication: maze will be generated with a randomized algorithm."; 
+//	    }
+//	    // Case 2: Prim
+//	    else if ("Prim".equalsIgnoreCase(parameter))
+//	    {
+//	        msg = "MazeApplication: generating random maze with Prim's algorithm.";
+//	        result.setBuilder(Order.Builder.Prim);
+//	    }
+//	    // Case 3 a and b: Eller, Kruskal or some other generation algorithm
+//	    else if ("Kruskal".equalsIgnoreCase(parameter))
+//	    {
+//	    	// TODO: for P2 assignment, please add code to set the builder accordingly
+//	        msg = "MazeApplication: generating random maze with Kruskal's Algorithm.";
+//	        result.setBuilder(Order.Builder.Kruskal);
+//	    }
+//	    else if ("Eller".equalsIgnoreCase(parameter))
+//	    {
+//	    	// TODO: for P2 assignment, please add code to set the builder accordingly
+//	        throw new RuntimeException("Don't know anybody named Eller ...");
+//	    }
+//	    // Case 4: a file
+//	    else {
+//	        File f = new File(parameter) ;
+//	        if (f.exists() && f.canRead())
+//	        {
+//	            msg = "MazeApplication: loading maze from file: " + parameter;
+//	            result.setFileName(parameter);
+//	            return result;
+//	        }
+//	        else {
+//	            // None of the predefined strings and not a filename either: 
+//	            msg = "MazeApplication: unknown parameter value: " + parameter + " ignored, operating in default mode.";
+//	        }
+//	    }
+	    // controller instanted and attributes set according to given input parameter
+	    // output message and return controller
+
 	}
 
 	/**
@@ -99,7 +147,7 @@ public class MazeApplication extends JFrame {
 	 * @param parameter can identify a generation method (Prim, Kruskal, Eller)
      * or a filename that contains a generated maze that is then loaded, or can be null
 	 */
-	private void init(String parameter) {
+	private void init(String[] parameter) {
 	    // instantiate a game controller and add it to the JFrame
 	    Controller controller = createController(parameter);
 		add(controller.getPanel()) ;
@@ -131,14 +179,25 @@ public class MazeApplication extends JFrame {
 	 * the name of a file that stores a maze in XML format
 	 */
 	public static void main(String[] args) {
-	    JFrame app ; 
-		switch (args.length) {
-		case 1 : app = new MazeApplication(args[0]);
-		break ;
-		case 0 : 
-		default : app = new MazeApplication() ;
-		break ;
-		}
+	    JFrame app;
+
+	    if(args.length == 0) {
+	    	app = new MazeApplication();
+	    }
+	    
+	    else if(args.length > 0) {
+	    	app = new MazeApplication(args);
+	    }
+	    else {
+	    	app = new MazeApplication();
+	    }
+//		switch (args.length) {
+//		case 1 : app = new MazeApplication(args);
+//		break ;
+//		case 0 : 
+//		default : app = new MazeApplication() ;
+//		break ;
+//		}
 		app.repaint() ;
 	}
 
