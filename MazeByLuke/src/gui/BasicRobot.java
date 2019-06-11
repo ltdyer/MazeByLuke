@@ -1,13 +1,35 @@
 package gui;
 
 import generation.CardinalDirection;
+import generation.Cells;
+import generation.MazeConfiguration;
 
 public class BasicRobot implements Robot {
 
+	private int odometer;
+	public Controller controller;
+	protected CardinalDirection facingThisDirection;
+
+	/**
+	 * Constructor to set up a Robot object
+	 * Takes a controller as input, initializes odometer to 0, sets robot and driver, sets direction to east, and makes hasStopped 		 * false.
+	 *
+	 * @author Luke Dyer
+	 * @params controller, creates controller variable to set robot
+	 */
+	public BasicRobot(Controller controller) {
+		this.controller = controller;
+		//will need to add something like controller.setRobotandDriver(this, driver)
+		this.odometer = 0;
+		this.hasStopped = false;
+		this.facingThisDirection = CardinalDirection.east;	
+
+	}
+
 	@Override
 	public void rotate(Turn turn) {
-		// TODO Auto-generated method stub
-		
+		//we want the robot to turn either left, right, or around.
+		//if we call with turn.left
 	}
 
 	@Override
