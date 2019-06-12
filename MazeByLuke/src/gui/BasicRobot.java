@@ -52,27 +52,27 @@ public class BasicRobot implements Robot {
 	@Override
 	public void move(int distance, boolean manual) {
 		
-		MazeConfiguration mazeConfig = this.controller.getMazeConfiguration();
-		
-		if (stopped == true) {
-			return;
-		}
-		
-		for (int d = 0; d < distance; d++) {
-			int currentPosition[] = this.getCurrentPosition();
-			
-			int xPosition = currentPosition[0];
-			int yPosition = currentPosition[1];
-
-			
-			if (mazeConfig.hasWall(xPosition, yPosition, facingThisDirection) == false) {
-				controller.keyDown(UserInput.Up, 0);
-			}
+//		MazeConfiguration mazeConfig = this.controller.getMazeConfiguration();
+//		
+//		if (stopped == true) {
+//			return;
+//		}
+//		
+//		for (int d = 0; d < distance; d++) {
+//			int currentPosition[] = this.getCurrentPosition();
 //			
-			//work on this at home, at work fill in the more trivial methods
-			
-		}
-		
+//			int xPosition = currentPosition[0];
+//			int yPosition = currentPosition[1];
+//
+//			
+//			if (mazeConfig.hasWall(xPosition, yPosition, facingThisDirection) == false) {
+//				controller.keyDown(UserInput.Up, 0);
+//			}
+////			
+//			//work on this at home, at work fill in the more trivial methods
+//			
+//		}
+//		
 	}
 
 	@Override
