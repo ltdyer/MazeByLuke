@@ -98,7 +98,7 @@ public class BasicRobot implements Robot {
 
 	@Override
 	public boolean isAtExit() {
-		if (getCurrentPosition() ) 
+		return false;
 		
 	}
 
