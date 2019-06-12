@@ -66,7 +66,10 @@ public class MazeApplication extends JFrame {
 	    		
 	    		System.out.println("parse is now: " + parse);
 	    		
-	    		if (parse.equals("Prim")) {
+				if (!parse.equals("Prim") || !parse.equals("Kruskal")) {
+					msg = "MazeApplication: maze will be generated with a randomized algorithm.";
+				}
+	    		else if (parse.equals("Prim")) {
 	    			msg = "MazeApplication: generating random maze with Prim's algorithm.";
 	    	        result.setBuilder(Order.Builder.Prim);
 	    		}
