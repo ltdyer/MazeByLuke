@@ -1,42 +1,111 @@
 package gui;
 
 import generation.CardinalDirection;
+import generation.Cells;
+import generation.MazeConfiguration;
+import gui.Constants.UserInput;
 
 public class BasicRobot implements Robot {
 
+	private int odometer;
+	public Controller controller;
+	protected CardinalDirection facingThisDirection;
+	private boolean stopped;
+	
+
+	/**
+	 * Constructor to set up a Robot object
+	 * Takes a controller as input, initializes odometer to 0, sets robot and driver, sets direction to east, and makes hasStopped 		 * false.
+	 *
+	 * @author Luke Dyer
+	 * @params controller, creates controller variable to set robot
+	 */
+	public BasicRobot(Controller controller) {
+		this.controller = controller;
+		this.odometer = 0;
+		this.stopped = false;
+		this.facingThisDirection = CardinalDirection.East;	
+		
+		this.setMaze(controller);
+
+	}
+
 	@Override
 	public void rotate(Turn turn) {
-		// TODO Auto-generated method stub
-		
+		if (stopped == true) {
+			return;
+		}
+		if (turn == Turn.RIGHT) {
+			controller.keyDown(UserInput.Right, 0);
+			this.facingThisDirection = facingThisDirection.rotateClockwise();
+		}
+		else if (turn == Turn.LEFT) {
+			controller.keyDown(UserInput.Left, 0);
+			this.facingThisDirection = facingThisDirection.rotateClockwise();
+		}
+		else if (turn == Turn.AROUND) {
+			controller.keyDown(UserInput.Right, 0);
+			controller.keyDown(UserInput.Right, 0);
+		}
 	}
 
 	@Override
 	public void move(int distance, boolean manual) {
-		// TODO Auto-generated method stub
+		
+		MazeConfiguration mazeConfig = this.controller.getMazeConfiguration();
+		
+		if (stopped == true) {
+			return;
+		}
+		
+		for (int d = 0; d < distance; d++) {
+			int currentPosition[] = this.getCurrentPosition();
+			
+			int xPosition = currentPosition[0];
+			int yPosition = currentPosition[1];
+
+			
+			if (mazeConfig.hasWall(xPosition, yPosition, facingThisDirection) == false) {
+				controller.keyDown(UserInput.Up, 0);
+			}
+//			
+			//work on this at home, at work fill in the more trivial methods
+			
+		}
 		
 	}
 
 	@Override
 	public int[] getCurrentPosition() throws Exception {
 		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void setMaze(Controller controller) {
-		// TODO Auto-generated method stub
+		MazeConfiguration mazeConfig = this.controller.getMazeConfiguration();
+		int currentPosition[] = this.getCurrentPosition();
+		int xPosition = currentPosition[0];
+		int yPosition = currentPosition[1];
+		if (mazeConfig.isValidPosition(xPosition, yPosition) == false) {
+			throw new Exception();
+		}
+		else {
+			return currentPosition;
+		}
 		
 	}
 
 	@Override
+	public void setMaze(Controller controller) {
+		this.controller = controller;
+	}
+
+	@Override
 	public boolean isAtExit() {
-		// TODO Auto-generated method stub
-		return false;
+		if (getCurrentPosition() ) 
+		
 	}
 
 	@Override
 	public boolean canSeeExit(Direction direction) throws UnsupportedOperationException {
-		// TODO Auto-generated method stub
+
+		//if the direction is north and distance is like a million or something then this is true
 		return false;
 	}
 
@@ -49,13 +118,12 @@ public class BasicRobot implements Robot {
 	@Override
 	public boolean hasRoomSensor() {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	@Override
 	public CardinalDirection getCurrentDirection() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.facingThisDirection;
 	}
 
 	@Override
@@ -73,13 +141,13 @@ public class BasicRobot implements Robot {
 	@Override
 	public int getOdometerReading() {
 		// TODO Auto-generated method stub
-		return 0;
+		return this.odometer;
 	}
 
 	@Override
 	public void resetOdometer() {
 		// TODO Auto-generated method stub
-		
+		this.odometer = 0;
 	}
 
 	@Override
