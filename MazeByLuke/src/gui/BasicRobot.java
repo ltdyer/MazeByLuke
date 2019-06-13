@@ -41,11 +41,12 @@ public class BasicRobot implements Robot {
 		}
 		else if (turn == Turn.LEFT) {
 			controller.keyDown(UserInput.Left, 0);
-			this.facingThisDirection = facingThisDirection.rotateClockwise();
+			this.facingThisDirection = facingThisDirection.rotateClockwise().rotateClockwise().rotateClockwise();
 		}
 		else if (turn == Turn.AROUND) {
 			controller.keyDown(UserInput.Right, 0);
 			controller.keyDown(UserInput.Right, 0);
+			this.facingThisDirection = facingThisDirection.rotateClockwise().rotateClockwise();
 		}
 	}
 
