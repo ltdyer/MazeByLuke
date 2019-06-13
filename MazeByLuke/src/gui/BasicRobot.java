@@ -52,34 +52,34 @@ public class BasicRobot implements Robot {
 	@Override
 	public void move(int distance, boolean manual) {
 		
-//		MazeConfiguration mazeConfig = this.controller.getMazeConfiguration();
-//		
-//		if (stopped == true) {
-//			return;
-//		}
-//		
-//		for (int d = 0; d < distance; d++) {
-//			int currentPosition[] = this.getCurrentPosition();
-//			
-//			int xPosition = currentPosition[0];
-//			int yPosition = currentPosition[1];
-//
-//			
-//			if (mazeConfig.hasWall(xPosition, yPosition, facingThisDirection) == false) {
-//				controller.keyDown(UserInput.Up, 0);
-//			}
-////			
-//			//work on this at home, at work fill in the more trivial methods
-//			
-//		}
-//		
+		MazeConfiguration mazeConfig = this.controller.getMazeConfiguration();
+		
+		if (stopped == true) {
+			return;
+		}
+		
+		for (int d = 0; d < distance; d++) {
+			int currentPosition[] = this.controller.getCurrentPosition();
+			
+			int xPosition = currentPosition[0];
+			int yPosition = currentPosition[1];
+
+			
+			if (mazeConfig.hasWall(xPosition, yPosition, facingThisDirection) == false) {
+				controller.keyDown(UserInput.Up, 0);
+			}
+	
+			//work on this at home, at work fill in the more trivial methods
+			
+		}
+		
 	}
 
 	@Override
 	public int[] getCurrentPosition() throws Exception {
-		// TODO Auto-generated method stub
+
 		MazeConfiguration mazeConfig = this.controller.getMazeConfiguration();
-		int currentPosition[] = this.getCurrentPosition();
+		int currentPosition[] = this.controller.getCurrentPosition();
 		int xPosition = currentPosition[0];
 		int yPosition = currentPosition[1];
 		if (mazeConfig.isValidPosition(xPosition, yPosition) == false) {
@@ -98,26 +98,85 @@ public class BasicRobot implements Robot {
 
 	@Override
 	public boolean isAtExit() {
+		MazeConfiguration mazeConfig = this.controller.getMazeConfiguration();
+		int currentPosition[] = this.controller.getCurrentPosition();
+		int xPosition = currentPosition[0];
+		int yPosition = currentPosition[1];
+		
+		if (mazeConfig.hasWall(xPosition, yPosition, CardinalDirection.East) == false) {
+			if (mazeConfig.isValidPosition(xPosition+1, yPosition) == false) {
+				return true;
+			}
+		}
+		if (mazeConfig.hasWall(xPosition, yPosition, CardinalDirection.West) == false) {
+			if (mazeConfig.isValidPosition(xPosition-1, yPosition) == false) {
+				return true;
+			}
+		}
+		if (mazeConfig.hasWall(xPosition, yPosition, CardinalDirection.North) == false) {
+			if (mazeConfig.isValidPosition(xPosition, yPosition+1) == false) {
+				return true;
+			}
+		}
+		if (mazeConfig.hasWall(xPosition, yPosition, CardinalDirection.South) == false) {
+			if (mazeConfig.isValidPosition(xPosition, yPosition-1) == false) {
+				return true;
+			}
+		}
+		
+		
 		return false;
+			
 		
 	}
 
 	@Override
 	public boolean canSeeExit(Direction direction) throws UnsupportedOperationException {
-
-		//if the direction is north and distance is like a million or something then this is true
-		return false;
+		
+		MazeConfiguration mazeConfig = this.controller.getMazeConfiguration();
+		int currentPosition[] = this.controller.getCurrentPosition();
+		int xPosition = currentPosition[0];
+		int yPosition = currentPosition[1];
+		
+		CardinalDirection cd = directionTranslator(direction);
+		
+		while (mazeConfig.isValidPosition(xPosition, yPosition) == true) {
+			if (mazeConfig.hasWall(xPosition, yPosition, cd)) {
+				return false;
+			}
+			if (cd == CardinalDirection.North) {
+				yPosition++;
+			}
+			if (cd == CardinalDirection.South) {
+				yPosition--;
+			}
+			if (cd == CardinalDirection.East) {
+				xPosition++;
+			}
+			if (cd == CardinalDirection.West) {
+				xPosition--;
+			}
+		}
+		
+		return true;
 	}
 
 	@Override
 	public boolean isInsideRoom() throws UnsupportedOperationException {
-		// TODO Auto-generated method stub
+		
+		MazeConfiguration mazeConfig = this.controller.getMazeConfiguration();
+		int currentPosition[] = this.controller.getCurrentPosition();
+		int xPosition = currentPosition[0];
+		int yPosition = currentPosition[1];
+		
+		if (mazeConfig.getMazecells().isInRoom(xPosition, yPosition) == true) {
+			return true;
+		}
 		return false;
 	}
 
 	@Override
 	public boolean hasRoomSensor() {
-		// TODO Auto-generated method stub
 		return true;
 	}
 
@@ -128,56 +187,101 @@ public class BasicRobot implements Robot {
 
 	@Override
 	public float getBatteryLevel() {
-		// TODO Auto-generated method stub
+		//default
 		return 0;
 	}
 
 	@Override
 	public void setBatteryLevel(float level) {
-		// TODO Auto-generated method stub
+		//default
 		
 	}
 
 	@Override
 	public int getOdometerReading() {
-		// TODO Auto-generated method stub
 		return this.odometer;
 	}
 
 	@Override
 	public void resetOdometer() {
-		// TODO Auto-generated method stub
 		this.odometer = 0;
 	}
 
 	@Override
 	public float getEnergyForFullRotation() {
-		// TODO Auto-generated method stub
+		//default
 		return 0;
 	}
 
 	@Override
 	public float getEnergyForStepForward() {
-		// TODO Auto-generated method stub
+		//default
 		return 0;
 	}
 
 	@Override
 	public boolean hasStopped() {
-		// TODO Auto-generated method stub
-		return false;
+		return this.stopped;
 	}
 
 	@Override
 	public int distanceToObstacle(Direction direction) throws UnsupportedOperationException {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		MazeConfiguration mazeConfig = this.controller.getMazeConfiguration();
+		int currentPosition[] = this.controller.getCurrentPosition();
+		int xPosition = currentPosition[0];
+		int yPosition = currentPosition[1];
+		
+		int footsteps = 0;
+		CardinalDirection cd = directionTranslator(direction);
+		
+		while (mazeConfig.hasWall(xPosition, yPosition, cd) == false) {
+			if (mazeConfig.isValidPosition(xPosition, yPosition) == false) {
+				return Integer.MAX_VALUE;
+			}
+			if (cd == CardinalDirection.North) {
+				yPosition++;
+			}
+			if (cd == CardinalDirection.South) {
+				yPosition--;
+			}
+			if (cd == CardinalDirection.East) {
+				xPosition++;
+			}
+			if (cd == CardinalDirection.West) {
+				xPosition--;
+			}
+			footsteps++;
+		}
+		
+		return footsteps;
 	}
 
 	@Override
 	public boolean hasDistanceSensor(Direction direction) {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
+	}
+	
+	/**
+	 * Takes a direction as input and gives the corresponding CardinalDirection for distanceToObstacle and
+	 * canSeeExit
+	 * @author Luke Dyer
+	 * @param direction
+	 * @return CardinalDirection based on given direction (Left, Right, Forwards, or Backwards)
+	 */
+	public CardinalDirection directionTranslator(Direction direction) {
+		CardinalDirection cd = this.getCurrentDirection();
+		
+		if (direction == Direction.RIGHT) {
+			cd = cd.rotateClockwise();
+		}
+		if (direction == Direction.BACKWARD) {
+			cd = cd.rotateClockwise().rotateClockwise();
+		}
+		if (direction == Direction.LEFT) {
+			cd = cd.rotateClockwise().rotateClockwise().rotateClockwise();
+		}
+		return cd;
 	}
 
 }
