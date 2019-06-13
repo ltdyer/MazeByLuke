@@ -8,6 +8,7 @@ public class WallFollower implements RobotDriver{
 	private int width;
 	private int height;
 	private Distance distance;
+	//hopefully this works
 	
 
 	@Override
