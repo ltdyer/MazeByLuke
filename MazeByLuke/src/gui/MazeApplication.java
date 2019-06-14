@@ -25,8 +25,7 @@ public class MazeApplication extends JFrame {
 	// not used, just to make the compiler, static code checker happy
 	private static final long serialVersionUID = 1L;
 	
-	Robot robot;
-	RobotDriver robotdriver;
+	
 	/**
 	 * Constructor
 	 */
@@ -63,7 +62,7 @@ public class MazeApplication extends JFrame {
 	    //System.out.println(parameter[i].startsWith("-"));
 	    if (parameter != null) {
 		    while (i < parameter.length && parameter[i].startsWith("-")) {
-		    	System.out.println(parse);
+
 		    	parse = parameter[i++];
 		    	System.out.println(parse);
 		    	
@@ -103,7 +102,15 @@ public class MazeApplication extends JFrame {
 		    			msg = "MazeApplication: Maze will be solved by a wall following robot";
 		    			//returns a controller variable
 		    			//figure out how to do this tomorrow 
+		    			RobotDriver robotdriver = new WallFollower();
+		    			Robot robot = new BasicRobot(result);
+		    			robotdriver.setRobot(robot);
 		    			result.setRobotAndDriver(robot, robotdriver);
+
+
+		    			//the issue with this whole thing is that robotdriver is still null
+		    			//maybe the issue also is that there isnt a maze built when we call these guys?
+		    			
 		    		}
 		    		
 		    		else if (parse.equals("Wizard")) {
@@ -133,7 +140,8 @@ public class MazeApplication extends JFrame {
 		    }
 	    }
 	    
-	    else if (parameter == null) {
+	    
+	    else if (parameter == null || parse == "Wallfollower" || parse == "Wizard") {
 	    	msg = "MazeApplication: maze will be generated with a randomized algorithm.";
 	    }
 	    

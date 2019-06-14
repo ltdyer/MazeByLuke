@@ -1,9 +1,9 @@
 package gui;
 
 import generation.CardinalDirection;
-import generation.Cells;
 import generation.MazeConfiguration;
 import gui.Constants.UserInput;
+import generation.Cells;
 
 public class BasicRobot implements Robot {
 
@@ -32,21 +32,33 @@ public class BasicRobot implements Robot {
 
 	@Override
 	public void rotate(Turn turn) {
+		
+		MazeConfiguration mazeConfig = this.controller.getMazeConfiguration();
+		int currentPosition[] = this.controller.getCurrentPosition();
+		int xPosition = currentPosition[0];
+		int yPosition = currentPosition[1];
+		
 		if (stopped == true) {
 			return;
 		}
 		if (turn == Turn.RIGHT) {
+			System.out.println("before the right turn, x is: "  + xPosition + "and y is: " + yPosition);
 			controller.keyDown(UserInput.Right, 0);
 			this.facingThisDirection = facingThisDirection.rotateClockwise();
+			System.out.println("after the right turn, x is: "  + xPosition + "and y is: " + yPosition);
 		}
 		else if (turn == Turn.LEFT) {
+			System.out.println("before the left turn, x is: "  + xPosition + "and y is: " + yPosition);
 			controller.keyDown(UserInput.Left, 0);
 			this.facingThisDirection = facingThisDirection.rotateClockwise().rotateClockwise().rotateClockwise();
+			System.out.println("after the left turn, x is: "  + xPosition + "and y is: " + yPosition);
 		}
 		else if (turn == Turn.AROUND) {
+			System.out.println("before the turn around, x is: "  + xPosition + "and y is: " + yPosition);
 			controller.keyDown(UserInput.Right, 0);
 			controller.keyDown(UserInput.Right, 0);
 			this.facingThisDirection = facingThisDirection.rotateClockwise().rotateClockwise();
+			System.out.println("after the turn around, x is: "  + xPosition + "and y is: " + yPosition);
 		}
 	}
 
@@ -65,10 +77,10 @@ public class BasicRobot implements Robot {
 			int xPosition = currentPosition[0];
 			int yPosition = currentPosition[1];
 
-			if (manual == false) {
+			if (manual == true) {
 				this.stopped = true;
 			}
-			if (mazeConfig.hasWall(xPosition, yPosition, facingThisDirection) == false) {
+			if (hasWall(xPosition, yPosition, facingThisDirection) == false) {
 				controller.keyDown(UserInput.Up, 0);
 			}
 	
@@ -108,21 +120,25 @@ public class BasicRobot implements Robot {
 		
 		if (mazeConfig.hasWall(xPosition, yPosition, CardinalDirection.East) == false) {
 			if (mazeConfig.isValidPosition(xPosition+1, yPosition) == false) {
+				System.out.println("Apparently does not have a wall to the east");
 				return true;
 			}
 		}
 		if (mazeConfig.hasWall(xPosition, yPosition, CardinalDirection.West) == false) {
 			if (mazeConfig.isValidPosition(xPosition-1, yPosition) == false) {
+				System.out.println("Apparently does not have a wall to the west");
 				return true;
 			}
 		}
 		if (mazeConfig.hasWall(xPosition, yPosition, CardinalDirection.North) == false) {
-			if (mazeConfig.isValidPosition(xPosition, yPosition+1) == false) {
+			if (mazeConfig.isValidPosition(xPosition, yPosition-1) == false) {
+				System.out.println("Apparently does not have a wall to the north");
 				return true;
 			}
 		}
 		if (mazeConfig.hasWall(xPosition, yPosition, CardinalDirection.South) == false) {
-			if (mazeConfig.isValidPosition(xPosition, yPosition-1) == false) {
+			if (mazeConfig.isValidPosition(xPosition, yPosition+1) == false) {
+				System.out.println("Apparently does not have a wall to the south");
 				return true;
 			}
 		}
@@ -244,9 +260,11 @@ public class BasicRobot implements Robot {
 			}
 			if (cd == CardinalDirection.North) {
 				yPosition++;
+				//maybe yPosition--
 			}
 			if (cd == CardinalDirection.South) {
 				yPosition--;
+				//maybe yPosition++
 			}
 			if (cd == CardinalDirection.East) {
 				xPosition++;
@@ -274,6 +292,9 @@ public class BasicRobot implements Robot {
 	 */
 	public CardinalDirection directionTranslator(Direction direction) {
 		CardinalDirection cd = this.getCurrentDirection();
+		if (direction == Direction.FORWARD) {
+			cd = cd;
+		}
 		
 		if (direction == Direction.RIGHT) {
 			cd = cd.rotateClockwise();
@@ -299,12 +320,20 @@ public class BasicRobot implements Robot {
 		int xPosition = currentPosition[0];
 		int yPosition = currentPosition[1];
 		
+		
+		return this.hasWall(xPosition, yPosition, cd);
+	}
+	
+	
+	public boolean hasWall(int x, int y, CardinalDirection cd) {
+		
 		if (cd == CardinalDirection.South || cd == CardinalDirection.North) {
 			cd = cd.oppositeDirection();
 		}
-		return this.controller.getMazeConfiguration().hasWall(xPosition, yPosition, cd);
+		
+		return this.controller.getMazeConfiguration().hasWall(x, y, cd);
 	}
-	
+	 
 	/**
 	 * Has the robot take one step forwards toward the exit
 	 * @author Luke Dyer
@@ -320,30 +349,53 @@ public class BasicRobot implements Robot {
 		int yPosition = currentPosition[1];
 		CardinalDirection cd = null;
 		
-		//North
-		if (mazeConfig.isValidPosition(xPosition, yPosition+1) == false) {
-			cd = CardinalDirection.North;
+		//check if the spot in front of you in your current direction is the end
+		if (canSeeExit(Direction.FORWARD)) {
+			if (getCurrentDirection() == CardinalDirection.North && mazeConfig.isValidPosition(xPosition, yPosition-1) == false) {
+				cd = CardinalDirection.North;
+			}
+			
+			if (getCurrentDirection() == CardinalDirection.South && mazeConfig.isValidPosition(xPosition, yPosition+1) == false) {
+				cd = CardinalDirection.South;
+			}
+			
+			if (getCurrentDirection() == CardinalDirection.East && mazeConfig.isValidPosition(xPosition+1, yPosition) == false) {
+				cd = CardinalDirection.East;
+			}
+			
+			if (getCurrentDirection() == CardinalDirection.West && mazeConfig.isValidPosition(xPosition-1, yPosition) == false) {
+				cd = CardinalDirection.West;
+			}
 		}
 		
-		//South
-		else if (mazeConfig.isValidPosition(xPosition, yPosition-1) == false) {
-			cd = CardinalDirection.South;
-		}
-		
-		//East
-		else if (mazeConfig.isValidPosition(xPosition+1, yPosition) == false) {
-			cd = CardinalDirection.East;
-		}
-		
-		//West
-		else if (mazeConfig.isValidPosition(xPosition-1, yPosition) == false) {
-			cd = CardinalDirection.West;
+		else {
+			//North
+			if (mazeConfig.isValidPosition(xPosition, yPosition-1) == false) {
+				cd = CardinalDirection.North;
+			}
+			
+			//South
+			else if (mazeConfig.isValidPosition(xPosition, yPosition+1) == false) {
+				cd = CardinalDirection.South;
+			}
+			
+			//East
+			else if (mazeConfig.isValidPosition(xPosition+1, yPosition) == false) {
+				cd = CardinalDirection.East;
+			}
+			
+			//West
+			else if (mazeConfig.isValidPosition(xPosition-1, yPosition) == false) {
+				cd = CardinalDirection.West;
+			}
 		}
 		if (cd == null) {
 			return false;
 		}
 		
 		while (getCurrentDirection() != cd) {
+			System.out.println("in stepTowardsExit, our current direction is: " + getCurrentDirection());
+			System.out.println("in stepTowardsExit, the CardinalDirection chosen was: " + cd);
 			rotate(Turn.RIGHT);
 		}
 		

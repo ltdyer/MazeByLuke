@@ -110,6 +110,7 @@ public class Controller {
     public void start() { 
         currentState = states[0]; // initial state is the title state
         currentState.setFileName(fileName); // can be null
+        
         currentState.start(this, panel);
         fileName = null; // reset after use
     }
@@ -146,7 +147,15 @@ public class Controller {
     public void switchFromGeneratingToPlaying(MazeConfiguration config) {
         currentState = states[2];
         currentState.setMazeConfiguration(config);
+        
         currentState.start(this, panel);
+        try {
+			this.getDriver().drive2Exit();
+		}
+		catch(Exception exception) {
+			System.out.println(exception);
+			System.out.println("I AM ERROR");
+		}
     }
     /**
      * Switches the controller to the final screen
@@ -199,6 +208,7 @@ public class Controller {
     public void setRobotAndDriver(Robot robot, RobotDriver robotdriver) {
         this.robot = robot;
         driver = robotdriver;
+
         
     }
     /**
