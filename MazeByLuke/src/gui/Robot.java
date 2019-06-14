@@ -205,5 +205,22 @@ public interface Robot {
 	 * finds supported by a robot.
 	 */
 	boolean hasDistanceSensor(Direction direction) ;
+	
+	/**
+	 * Takes a CardinalDirection as input and returns a boolean using the hasWall method of mazeConfig
+	 * that tells if there is a wall in that CardinalDirection at that position.
+	 * @author Luke Dyer
+	 * @param cd
+	 * @return boolean that is true if there is a wall, and false if there is not a wall
+	 */
+	boolean hasWallInThisDirection(CardinalDirection cd) ;
+	
+	/**
+	 * Tells the robot, if it has reached the exit, how to properly take the last step required to leave the maze
+	 * @author Luke Dyer
+	 * @return boolean, true if it exits, false if it does not
+	 */
+	
+	boolean stepTowardsExit();
 
 }

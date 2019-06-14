@@ -1,6 +1,7 @@
 package gui;
 
 import generation.Distance;
+import gui.Robot.Turn;
 
 public class WallFollower implements RobotDriver{
 	
@@ -34,11 +35,36 @@ public class WallFollower implements RobotDriver{
 	public boolean drive2Exit() throws Exception {
 		while (brobot.isAtExit() == false) {
 			
-			//need to write a helper method to determine if there are walls
-			//there also exists a method hasWalls in MazeConfig jsyk
-			//since WallFollower only knows Robot
-			//boolean frontWall = brobot.hasWall()
+			//there is no wall in front and no wall to the left
+			if (!brobot.hasWallInThisDirection(brobot.getCurrentDirection()) && 
+				!brobot.hasWallInThisDirection(brobot.getCurrentDirection().rotateClockwise().rotateClockwise().rotateClockwise())) {
+				
+				brobot.rotate(Turn.LEFT);
+			}
+			
+			//there is a wall in front and a wall to the left
+			else if (brobot.hasWallInThisDirection(brobot.getCurrentDirection()) && 
+				brobot.hasWallInThisDirection(brobot.getCurrentDirection().rotateClockwise().rotateClockwise().rotateClockwise())) {
+					
+				brobot.rotate(Turn.RIGHT);
+			}
+			
+			//there is a wall in front and no wall to the left
+			else if (brobot.hasWallInThisDirection(brobot.getCurrentDirection()) && 
+				!brobot.hasWallInThisDirection(brobot.getCurrentDirection().rotateClockwise().rotateClockwise().rotateClockwise())) {
+					
+				brobot.rotate(Turn.LEFT);
+			}
+			
+			if (!brobot.hasWallInThisDirection(brobot.getCurrentDirection())) {
+				brobot.move(1, false);
+			}
+			
+			if (brobot.hasStopped()) {
+				return false;
+			}
 		}
+		return brobot.stepTowardsExit();
 	}
 
 	@Override

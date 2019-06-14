@@ -65,7 +65,9 @@ public class BasicRobot implements Robot {
 			int xPosition = currentPosition[0];
 			int yPosition = currentPosition[1];
 
-			
+			if (manual == false) {
+				this.stopped = true;
+			}
 			if (mazeConfig.hasWall(xPosition, yPosition, facingThisDirection) == false) {
 				controller.keyDown(UserInput.Up, 0);
 			}
@@ -284,5 +286,74 @@ public class BasicRobot implements Robot {
 		}
 		return cd;
 	}
+	
+	/**
+	 * Takes a CardinalDirection as input and returns a boolean using the hasWall method of mazeConfig
+	 * that tells if there is a wall in that CardinalDirection at that position.
+	 * @author Luke Dyer
+	 * @param cd
+	 * @return boolean that is true if there is a wall, and false if there is not a wall
+	 */
+	public boolean hasWallInThisDirection(CardinalDirection cd) {
+		int currentPosition[] = this.controller.getCurrentPosition();
+		int xPosition = currentPosition[0];
+		int yPosition = currentPosition[1];
+		
+		if (cd == CardinalDirection.South || cd == CardinalDirection.North) {
+			cd = cd.oppositeDirection();
+		}
+		return this.controller.getMazeConfiguration().hasWall(xPosition, yPosition, cd);
+	}
+	
+	/**
+	 * Has the robot take one step forwards toward the exit
+	 * @author Luke Dyer
+	 * @return boolean, true if it makes it, false if it does not
+	 */
+	public boolean stepTowardsExit() {
+		//get a cd based on isValidPosition, which means exit is in that direction, then have robot rotate till
+		//facing that direction, then walk 1
+		
+		MazeConfiguration mazeConfig = this.controller.getMazeConfiguration();
+		int currentPosition[] = this.controller.getCurrentPosition();
+		int xPosition = currentPosition[0];
+		int yPosition = currentPosition[1];
+		CardinalDirection cd = null;
+		
+		//North
+		if (mazeConfig.isValidPosition(xPosition, yPosition+1) == false) {
+			cd = CardinalDirection.North;
+		}
+		
+		//South
+		else if (mazeConfig.isValidPosition(xPosition, yPosition-1) == false) {
+			cd = CardinalDirection.South;
+		}
+		
+		//East
+		else if (mazeConfig.isValidPosition(xPosition+1, yPosition) == false) {
+			cd = CardinalDirection.East;
+		}
+		
+		//West
+		else if (mazeConfig.isValidPosition(xPosition-1, yPosition) == false) {
+			cd = CardinalDirection.West;
+		}
+		if (cd == null) {
+			return false;
+		}
+		
+		while (getCurrentDirection() != cd) {
+			rotate(Turn.RIGHT);
+		}
+		
+		move(1, false);
+		
+		return true;
+	}
+	
 
+	
+	
+	
 }
