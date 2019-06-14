@@ -45,6 +45,7 @@ public class BasicRobot implements Robot {
 			System.out.println("before the right turn, x is: "  + xPosition + "and y is: " + yPosition);
 			controller.keyDown(UserInput.Right, 0);
 			this.facingThisDirection = facingThisDirection.rotateClockwise();
+			System.out.println("In the rotate method, after pressing keyDown, direction is: " + getCurrentDirection());
 			System.out.println("after the right turn, x is: "  + xPosition + "and y is: " + yPosition);
 		}
 		else if (turn == Turn.LEFT) {
