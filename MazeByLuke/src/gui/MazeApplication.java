@@ -24,7 +24,9 @@ public class MazeApplication extends JFrame {
 
 	// not used, just to make the compiler, static code checker happy
 	private static final long serialVersionUID = 1L;
-
+	
+	Robot robot;
+	RobotDriver robotdriver;
 	/**
 	 * Constructor
 	 */
@@ -54,51 +56,86 @@ public class MazeApplication extends JFrame {
 	    String msg = null; // message for feedback
 	    
 	    int i = 0;
-	    int j;
+
 	    String parse = null;
 	    
-	    while (i < parameter.length && parameter[i].startsWith("-")) {
-	    	parse = parameter[i++];
-	    	
-	    	if (parse.equals("-g")) {
-	    		System.out.println("parse is -g");
-	    		parse = parameter[i++];
-	    		
-	    		System.out.println("parse is now: " + parse);
-	    		
-				if (!parse.equals("Prim") || !parse.equals("Kruskal")) {
-					msg = "MazeApplication: maze will be generated with a randomized algorithm.";
-				}
-	    		else if (parse.equals("Prim")) {
-	    			msg = "MazeApplication: generating random maze with Prim's algorithm.";
-	    	        result.setBuilder(Order.Builder.Prim);
-	    		}
-	    		else if (parse.equals("Kruskal")) {
-	    			msg = "MazeApplication: generating random maze with Kruskal's Algorithm.";
-	    	        result.setBuilder(Order.Builder.Kruskal);
-	    		}
+	    //System.out.println(i < parameter.length);
+	    //System.out.println(parameter[i].startsWith("-"));
+	    if (parameter != null) {
+		    while (i < parameter.length && parameter[i].startsWith("-")) {
+		    	System.out.println(parse);
+		    	parse = parameter[i++];
+		    	System.out.println(parse);
+		    	
+	
+		    	
+		    	if (parse.equals("-g")) {
+		    		System.out.println("parse is -g");
+		    		parse = parameter[i++];
+		    		
+		    		System.out.println("parse is now: " + parse);
+		    		
+		    		if (parse.equals("Kruskal")) {
+		    			msg = "MazeApplication: generating random maze with Kruskal's Algorithm.";
+		    	        result.setBuilder(Order.Builder.Kruskal);
+		    		}
+		    		
+		    		else if (parse.equals("Prim")) {
+		    			msg = "MazeApplication: generating random maze with Prim's algorithm.";
+		    	        result.setBuilder(Order.Builder.Prim);
+		    		}
+		    		
+//		    		if (parameter.length > 2) {
+//		    			parse = parameter[i++];
+//			    		
+//			    		System.out.println("parse is now: " + parse);
+//		    		}
 
-	    	}
-	    	
-	    	if (parse.equals("-f")) {
-	    		System.out.println("parse is -f");
-	    		parse = parameter[i++];
-	    		
-	    		File f = new File(parse) ;
-		        if (f.exists() && f.canRead())
-		        {
-		            msg = "MazeApplication: loading maze from file: " + parse;
-		            result.setFileName(parse);
-		            return result;
-		        }
-		        else {
-		            // None of the predefined strings and not a filename either: 
-		            msg = "MazeApplication: unknown parameter value: " + parse + " ignored, operating in default mode.";
-		        }
-	    	}
+		    	}
+		    	
+		    	if (parse.equals("-d")) {
+		    		System.out.println("parse is -d");
+		    		parse = parameter[i++];
+		    		
+		    		System.out.println("parse is now: " + parse);
+		    		
+		    		if (parse.equals("Wallfollower")) {
+		    			msg = "MazeApplication: Maze will be solved by a wall following robot";
+		    			//returns a controller variable
+		    			//figure out how to do this tomorrow 
+		    			result.setRobotAndDriver(robot, robotdriver);
+		    		}
+		    		
+		    		else if (parse.equals("Wizard")) {
+		    			msg = "I didn't do the extra credit but I still had enough time to write this message";
+		    			
+		    		}
+		    	}
+		    	
+		    	
+		    	if (parse.equals("-f")) {
+		    		System.out.println("parse is -f");
+		    		parse = parameter[i++];
+		    		
+		    		System.out.println("parse is now: " + parse);
+		    		File f = new File(parse) ;
+			        if (f.exists() && f.canRead())
+			        {
+			            msg = "MazeApplication: loading maze from file: " + parse;
+			            result.setFileName(parse);
+			            return result;
+			        }
+			        else {
+			            // None of the predefined strings and not a filename either: 
+			            msg = "MazeApplication: unknown parameter value: " + parse + " ignored, operating in default mode.";
+			        }
+		    	}
+		    }
 	    }
 	    
-	    
+	    else if (parameter == null) {
+	    	msg = "MazeApplication: maze will be generated with a randomized algorithm.";
+	    }
 	    
 	    
 	    System.out.println(msg);
