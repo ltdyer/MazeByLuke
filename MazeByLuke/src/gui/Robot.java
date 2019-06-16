@@ -1,6 +1,7 @@
 package gui;
 
 import generation.CardinalDirection;
+import generation.MazeConfiguration;
 
 
 /**
@@ -222,5 +223,12 @@ public interface Robot {
 	 */
 	
 	boolean stepTowardsExit();
+	
+	/**
+	 * Returns the MazeConfiguration for the WallFollower
+	 * @author Luke Dyer
+	 * @return MazeConfiguration
+	 */
+	MazeConfiguration getWallfollowerMazeConfiguration() ;
 
 }

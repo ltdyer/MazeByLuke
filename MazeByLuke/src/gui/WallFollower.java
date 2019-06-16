@@ -1,6 +1,8 @@
 package gui;
 
 import generation.Distance;
+import generation.MazeConfiguration;
+import gui.Robot.Direction;
 import gui.Robot.Turn;
 
 public class WallFollower implements RobotDriver{
@@ -9,6 +11,8 @@ public class WallFollower implements RobotDriver{
 	private int width;
 	private int height;
 	private Distance distance;
+	private Direction direction;
+	private Controller controller;
 	//hopefully this works
 	
 	public WallFollower() {
@@ -36,12 +40,21 @@ public class WallFollower implements RobotDriver{
 	@Override
 	public boolean drive2Exit() throws Exception {
 		
+		MazeConfiguration mazeConfig = brobot.getWallfollowerMazeConfiguration();
+		int currentPosition[] = brobot.getCurrentPosition();
+		int xPosition = currentPosition[0];
+		int yPosition = currentPosition[1];
 		while (brobot.isAtExit() == false) {
 			
-			boolean rightWall = brobot.hasWallInThisDirection(brobot.getCurrentDirection().rotateClockwise());
+//			boolean rightWall = mazeConfig.hasWall(xPosition, yPosition, brobot.getCurrentDirection().rotateClockwise());
+//			boolean frontWall = mazeConfig.hasWall(xPosition, yPosition, brobot.getCurrentDirection());
+//			boolean leftWall = mazeConfig.hasWall(xPosition, yPosition, brobot.getCurrentDirection().rotateClockwise().rotateClockwise().rotateClockwise());
+					
 			boolean frontWall = brobot.hasWallInThisDirection(brobot.getCurrentDirection());
 			boolean leftWall = brobot.hasWallInThisDirection(brobot.getCurrentDirection().rotateClockwise().rotateClockwise().rotateClockwise());
 			
+			//System.out.println("There is a front wall: " + frontWall);
+			//System.out.println("There is a left wall: " + leftWall);
 			//there is no wall in front and no wall to the left
 			if (frontWall == false && leftWall == false) {
 					
@@ -69,7 +82,7 @@ public class WallFollower implements RobotDriver{
 			if (!brobot.hasWallInThisDirection(brobot.getCurrentDirection())) {
 				
 				System.out.println("No wall in this direction, move");
-				System.out.println(brobot.getCurrentDirection());
+				System.out.println("Current direction is: " + brobot.getCurrentDirection());
 				brobot.move(1, false);
 				System.out.println("brobot has moved");
 			}
@@ -78,10 +91,12 @@ public class WallFollower implements RobotDriver{
 				System.out.println("Brobot stopped for some reason");
 				return false;
 			}
-			System.out.println("Is Brobot at the exit?: " + brobot.isAtExit());
+			//System.out.println("Is Brobot at the exit?: " + brobot.isAtExit());
 		}
 		System.out.println("Brobot's direction at termination is: " + brobot.getCurrentDirection());
 		System.out.println("while loop has terminated");
+		
+		
 		return brobot.stepTowardsExit();
 	}
 
