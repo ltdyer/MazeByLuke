@@ -44,6 +44,9 @@ public class WallFollower implements RobotDriver{
 		int currentPosition[] = brobot.getCurrentPosition();
 		int xPosition = currentPosition[0];
 		int yPosition = currentPosition[1];
+		int prevX = 0;
+		int prevY = 0;
+		int counter = 0;
 		while (brobot.isAtExit() == false) {
 			
 //			boolean rightWall = mazeConfig.hasWall(xPosition, yPosition, brobot.getCurrentDirection().rotateClockwise());
@@ -83,8 +86,21 @@ public class WallFollower implements RobotDriver{
 				
 				//System.out.println("No wall in this direction, move");
 				//System.out.println("Current direction is: " + brobot.getCurrentDirection());
+				prevX = xPosition;
+				prevY = yPosition;
 				brobot.move(1, false);
+				
 				//System.out.println("brobot has moved");
+				if (prevX == brobot.getCurrentPosition()[0] && prevY == brobot.getCurrentPosition()[1]) {
+					System.out.println("we did not really move");
+					counter ++;
+					if (counter == 10000) {
+						System.out.println("Your robot got stuck in a corner! How Unfortunate! I swear this only happens every once in a while! Try Again!");
+						brobot.stuckInCorner();
+						break;
+					}
+					
+				}
 			}
 			
 			if (brobot.hasStopped()) {

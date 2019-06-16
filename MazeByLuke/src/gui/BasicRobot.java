@@ -414,6 +414,10 @@ public class BasicRobot implements Robot {
 		return this.controller.getMazeConfiguration();
 	}
 	
+	public void stuckInCorner() {
+		this.controller.switchFromPlayingToWinning(0);
+	}
+	
 
 	
 	

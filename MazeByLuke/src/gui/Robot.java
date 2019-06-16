@@ -230,5 +230,11 @@ public interface Robot {
 	 * @return MazeConfiguration
 	 */
 	MazeConfiguration getWallfollowerMazeConfiguration() ;
-
+	
+	/**
+	 * When you get stuck in the corner, ends the game
+	 * @author Luke Dyer
+	 * @return void
+	 */
+	void stuckInCorner() ;
 }
