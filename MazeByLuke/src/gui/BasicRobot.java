@@ -43,31 +43,27 @@ public class BasicRobot implements Robot {
 			return;
 		}
 		if (turn == Turn.RIGHT) {
-			System.out.println("In the rotate method, before pressing keyDown, direction is: " + this.facingThisDirection);
+			//System.out.println("In the rotate method, before pressing keyDown, direction is: " + this.facingThisDirection);
 			controller.keyDown(UserInput.Right, 0);
 			this.facingThisDirection = this.facingThisDirection.rotateClockwise();
-//			if (this.facingThisDirection == CardinalDirection.North || this.facingThisDirection == CardinalDirection.South) {
-//				this.facingThisDirection = this.facingThisDirection.oppositeDirection();
-//			}
-			System.out.println("In the rotate method, after pressing keyDown, direction is: " + this.facingThisDirection);
+
+			//System.out.println("In the rotate method, after pressing keyDown, direction is: " + this.facingThisDirection);
 			
 		}
 		else if (turn == Turn.LEFT) {
-			System.out.println("In the rotate method, before pressing keyDown, direction is: " + this.facingThisDirection);
+			//System.out.println("In the rotate method, before pressing keyDown, direction is: " + this.facingThisDirection);
 
 			controller.keyDown(UserInput.Left, 0);
 			this.facingThisDirection = this.facingThisDirection.rotateClockwise().rotateClockwise().rotateClockwise();
-//			if(this.facingThisDirection == CardinalDirection.North || this.facingThisDirection == CardinalDirection.South) {
-//				this.facingThisDirection = this.facingThisDirection.oppositeDirection();
-//			}
-			System.out.println("In the rotate method, after pressing keyDown, direction is: " + this.facingThisDirection);
+
+			//System.out.println("In the rotate method, after pressing keyDown, direction is: " + this.facingThisDirection);
 		}
 		else if (turn == Turn.AROUND) {
-			System.out.println("before the turn around, x is: "  + xPosition + "and y is: " + yPosition);
+			//System.out.println("before the turn around, x is: "  + xPosition + "and y is: " + yPosition);
 			controller.keyDown(UserInput.Right, 0);
 			controller.keyDown(UserInput.Right, 0);
 			this.facingThisDirection = this.facingThisDirection.rotateClockwise().rotateClockwise();
-			System.out.println("after the turn around, x is: "  + xPosition + "and y is: " + yPosition);
+			//System.out.println("after the turn around, x is: "  + xPosition + "and y is: " + yPosition);
 		}
 	}
 
@@ -129,25 +125,25 @@ public class BasicRobot implements Robot {
 		
 		if (mazeConfig.hasWall(xPosition, yPosition, CardinalDirection.East) == false) {
 			if (mazeConfig.isValidPosition(xPosition+1, yPosition) == false) {
-				System.out.println("Apparently does not have a wall to the east");
+				//System.out.println("Apparently does not have a wall to the east");
 				return true;
 			}
 		}
 		if (mazeConfig.hasWall(xPosition, yPosition, CardinalDirection.West) == false) {
 			if (mazeConfig.isValidPosition(xPosition-1, yPosition) == false) {
-				System.out.println("Apparently does not have a wall to the west");
+				//System.out.println("Apparently does not have a wall to the west");
 				return true;
 			}
 		}
 		if (mazeConfig.hasWall(xPosition, yPosition, CardinalDirection.North) == false) {
 			if (mazeConfig.isValidPosition(xPosition, yPosition-1) == false) {
-				System.out.println("Apparently does not have a wall to the north");
+				//System.out.println("Apparently does not have a wall to the north");
 				return true;
 			}
 		}
 		if (mazeConfig.hasWall(xPosition, yPosition, CardinalDirection.South) == false) {
 			if (mazeConfig.isValidPosition(xPosition, yPosition+1) == false) {
-				System.out.println("Apparently does not have a wall to the south");
+				//System.out.println("Apparently does not have a wall to the south");
 				return true;
 			}
 		}
@@ -359,18 +355,6 @@ public class BasicRobot implements Robot {
 		int yPosition = currentPosition[1];
 		CardinalDirection cd = null;
 		
-		//check if the spot in front of you in your current direction is the end
-		//if (canSeeExit(Direction.FORWARD)) {
-		
-//		System.out.println("The exit is in the forward direction: " + canSeeExit(relativeDirection.FORWARD));
-//		System.out.println("The exit is in the backward direction: " + canSeeExit(relativeDirection.BACKWARD));
-//		System.out.println("The exit is in the left direction: " + canSeeExit(relativeDirection.LEFT));
-//		System.out.println("The exit is in the right direction: " + canSeeExit(relativeDirection.RIGHT));
-		
-		System.out.println("has wall to the north: " + mazeConfig.hasWall(xPosition, yPosition, CardinalDirection.North) + " and North is a valid position: " + mazeConfig.isValidPosition(xPosition, yPosition-1));
-		System.out.println("has wall to the south: " + mazeConfig.hasWall(xPosition, yPosition, CardinalDirection.South) + " and South is a valid position: " + mazeConfig.isValidPosition(xPosition, yPosition+1));
-		System.out.println("has wall to the east: " + mazeConfig.hasWall(xPosition, yPosition, CardinalDirection.East) + " and East is a valid position: " + mazeConfig.isValidPosition(xPosition+1, yPosition));
-		System.out.println("has wall to the west: " + mazeConfig.hasWall(xPosition, yPosition, CardinalDirection.West) + " and West is a valid position: " + mazeConfig.isValidPosition(xPosition-1, yPosition));
 
 		
 		if (!mazeConfig.hasWall(xPosition, yPosition, CardinalDirection.North) && mazeConfig.isValidPosition(xPosition, yPosition-1) == false) {
@@ -390,15 +374,15 @@ public class BasicRobot implements Robot {
 		}
 
 		if (cd == null) {
-			System.out.println("Should have chosen North: " + !mazeConfig.isValidPosition(xPosition, yPosition-1));
-			System.out.println("Should have chosen South: " + !mazeConfig.isValidPosition(xPosition, yPosition+1));
-			System.out.println("Should have chosen East: " + !mazeConfig.isValidPosition(xPosition+1, yPosition));
-			System.out.println("Should have chosen West: " + !mazeConfig.isValidPosition(xPosition-1, yPosition));
+//			System.out.println("Should have chosen North: " + !mazeConfig.isValidPosition(xPosition, yPosition-1));
+//			System.out.println("Should have chosen South: " + !mazeConfig.isValidPosition(xPosition, yPosition+1));
+//			System.out.println("Should have chosen East: " + !mazeConfig.isValidPosition(xPosition+1, yPosition));
+//			System.out.println("Should have chosen West: " + !mazeConfig.isValidPosition(xPosition-1, yPosition));
 			//since it seems to be choosing two different directions, maybe we should use either the hasWallInThisDireciton
 			//in conjunction with that check to see if it is not valid and there is no wall there, so choose that
 			//maybe also try canSeeExit in a certain direction so we know that if a position is invalid and we can see
 			//the exit from that direction, we know that is the true exit and has to be the chosen cd
-			System.out.println("For some reason, we did not choose a cardinaldirection");
+			//System.out.println("For some reason, we did not choose a cardinaldirection");
 			return false;
 		}
 		
@@ -410,8 +394,8 @@ public class BasicRobot implements Robot {
 		}
 		else {
 			while (getCurrentDirection() != cd) {
-				System.out.println("in stepTowardsExit, our current direction is: " + getCurrentDirection());
-				System.out.println("in stepTowardsExit, the CardinalDirection chosen was: " + cd);
+				//System.out.println("in stepTowardsExit, our current direction is: " + getCurrentDirection());
+				//System.out.println("in stepTowardsExit, the CardinalDirection chosen was: " + cd);
 				rotate(Turn.RIGHT);
 			}
 		}

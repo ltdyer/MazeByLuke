@@ -58,21 +58,21 @@ public class WallFollower implements RobotDriver{
 			//there is no wall in front and no wall to the left
 			if (frontWall == false && leftWall == false) {
 					
-				System.out.println("No wall in front and no wall to the left, turn left");
+				//System.out.println("No wall in front and no wall to the left, turn left");
 				brobot.rotate(Turn.LEFT);
 			}
 			
 			//there is a wall in front and a wall to the left
 			else if (frontWall == true && leftWall == true) {
 				
-					System.out.println("Wall in front and wall to the left, turn right");
+					//System.out.println("Wall in front and wall to the left, turn right");
 					brobot.rotate(Turn.RIGHT);
 			}
 			
 			//there is a wall in front and no wall to the left
 			else if (frontWall == true && leftWall == false) {
 				
-					System.out.println("Wall in front and no wall to the left, turn left");
+					//System.out.println("Wall in front and no wall to the left, turn left");
 					brobot.rotate(Turn.LEFT);
 			}
 			
@@ -81,20 +81,20 @@ public class WallFollower implements RobotDriver{
 			
 			if (!brobot.hasWallInThisDirection(brobot.getCurrentDirection())) {
 				
-				System.out.println("No wall in this direction, move");
-				System.out.println("Current direction is: " + brobot.getCurrentDirection());
+				//System.out.println("No wall in this direction, move");
+				//System.out.println("Current direction is: " + brobot.getCurrentDirection());
 				brobot.move(1, false);
-				System.out.println("brobot has moved");
+				//System.out.println("brobot has moved");
 			}
 			
 			if (brobot.hasStopped()) {
-				System.out.println("Brobot stopped for some reason");
+				//System.out.println("Brobot stopped for some reason");
 				return false;
 			}
 			//System.out.println("Is Brobot at the exit?: " + brobot.isAtExit());
 		}
-		System.out.println("Brobot's direction at termination is: " + brobot.getCurrentDirection());
-		System.out.println("while loop has terminated");
+		//System.out.println("Brobot's direction at termination is: " + brobot.getCurrentDirection());
+		//System.out.println("while loop has terminated");
 		
 		
 		return brobot.stepTowardsExit();

@@ -8,7 +8,7 @@ public class OrderStub implements Order{
 	boolean perf;
 	int skillLevel;
 	
-	OrderStub (int skillLevel, boolean perf, Builder builder) {
+	public OrderStub (int skillLevel, boolean perf, Builder builder) {
 		this.skillLevel = skillLevel;
 		this.perf = perf;
 		this.builder = builder;

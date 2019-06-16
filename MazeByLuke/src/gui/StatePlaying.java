@@ -154,33 +154,33 @@ public class StatePlaying extends DefaultState {
         case Start: // misplaced, do nothing
             break;
         case Up: // move forward
-        	System.out.println("Cardinal Direction before moving up is " + getCurrentDirection());
+        	//System.out.println("Cardinal Direction before moving up is " + getCurrentDirection());
             walk(1);
             
             // check termination, did we leave the maze?
             if (isOutside(px,py)) {
                 control.switchFromPlayingToWinning(0);
             }
-            System.out.println("Cardinal Direction after moving up is " + getCurrentDirection());
+            //System.out.println("Cardinal Direction after moving up is " + getCurrentDirection());
             break;
         case Left: // turn left
-        	System.out.println("Cardinal Direction before moving left is " + getCurrentDirection());
+        	//System.out.println("Cardinal Direction before moving left is " + getCurrentDirection());
             rotate(1);
-            System.out.println("Cardinal Direction after moving left is " + getCurrentDirection());
+           // System.out.println("Cardinal Direction after moving left is " + getCurrentDirection());
             break;
         case Right: // turn right
-        	System.out.println("Cardinal Direction before moving right is " + getCurrentDirection());
+        	//System.out.println("Cardinal Direction before moving right is " + getCurrentDirection());
             rotate(-1);
-            System.out.println("Cardinal Direction after moving right is " + getCurrentDirection());
+            //System.out.println("Cardinal Direction after moving right is " + getCurrentDirection());
             break;
         case Down: // move backward
-        	System.out.println("Cardinal Direction before moving down is " + getCurrentDirection());
+        	//System.out.println("Cardinal Direction before moving down is " + getCurrentDirection());
             walk(-1);
             // check termination, did we leave the maze?
             if (isOutside(px,py)) {
                 control.switchFromPlayingToWinning(0);
             }
-            System.out.println("Cardinal Direction after moving down is " + getCurrentDirection());
+            //System.out.println("Cardinal Direction after moving down is " + getCurrentDirection());
             break;
         case ReturnToTitle: // escape to title screen
             control.switchToTitle();
